@@ -18,33 +18,33 @@ export default class BookDetails extends Component {
                     console.log('data',data)
                     if(!data.book) return null;
                     
-                    const { name, genre } = data.book[0];
+                    const { name, genre, author } = data.book[0];
                     return (
                         <fieldset>
                             <legend>Book Details</legend>
                             
                             Name: {name}
                             <br/>
-                            Genre {genre}
+                            Genre: {genre}
 
                             <br/>
 
-                            {/* Author Details:
+                            Author Details:
                             <ol>
                                 <li>Name: {author.name}</li>
                                 <li>Age: {author.age}</li>
                                 <li>Books:
                                 <ul>
-                                    {author.book.map((b) => {
+                                    {author.books.map((b) => {
                                         return (
-                                            <li>{b.name}</li>
+                                            <li key={b.id}>{b.name}</li>
                                         )
                                     }
 
                                     )}
                                 </ul>
                                 </li>
-                            </ol> */}
+                            </ol>
                         </fieldset>
                     );
                     }}

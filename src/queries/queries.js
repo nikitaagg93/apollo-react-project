@@ -18,35 +18,35 @@ export const getAuthorsQuery = gql`
     }
 `
 
-// export const getBookDetailsQuery = gql`
-//     query($id: ID!){
-//         book(id: $id){
-//             id
-//             name
-//             genre
-//             authorId
-//             author{
-//                 id
-//                 name
-//                 age
-//                 book {
-//                     name
-//                     id
-//                 }
-//             }
-//         }
-//     }
-// `
-
 export const getBookDetailsQuery = gql`
     query($id: ID!){
         book(id: $id){
             id
             name
             genre
+            authorId
+            author{
+                id
+                name
+                age
+                books {
+                    name
+                    id
+                }
+            }
         }
     }
 `
+
+// export const getBookDetailsQuery = gql`
+//     query($id: ID!){
+//         book(id: $id){
+//             id
+//             name
+//             genre
+//         }
+//     }
+// `
 
 
 

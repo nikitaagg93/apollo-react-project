@@ -13,18 +13,19 @@ const typeDefs = gql`
         name: String!
         genre: String!
         authorId: ID!
-       
+        author: Author       
     }
     type Author {
         id: ID!
         name: String!
         age: Int!
+        books: [Book]
     }
     type Query {
         books: [Book]
         book(id: ID!): [Book]
         authors: [Author]
-        author(id: ID): [Author]
+        author(id: ID!): Author
     }
 
     type Mutation {
@@ -35,8 +36,8 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         books: async () => await Book.find({}).exec(),
-        book: async (parent, args, context, info) => await Book.find({_id: args.id}).exec(),
-        author: async (parent, args, context, info) => await Author.findById(args.id).exec(),
+        author: async (parent, args) => await Author.find({ _id: args.id}).exec(),
+        book: async (parent, args) => await Book.find({_id: args.id}).exec(),
         authors: async () => await Author.find({}).exec(),
     },
     Mutation: {
@@ -48,12 +49,21 @@ const resolvers = {
                 return e.message;
             }
         }
+    },
+    Book:{
+        author: async (parent) =>  await Author.findById(parent.authorId).exec()
+    },
+    Author: {
+        books: async (parent) => await Book.find({authorId: parent.id}).exec()
     }
 };
 
   
   // Initialize the app
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ 
+    typeDefs, 
+    resolvers
+ });
 const app = express();
 server.applyMiddleware({ app });
 
